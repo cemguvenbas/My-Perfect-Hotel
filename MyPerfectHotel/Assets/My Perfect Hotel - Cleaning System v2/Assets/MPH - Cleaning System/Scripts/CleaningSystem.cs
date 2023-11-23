@@ -19,7 +19,11 @@ public class CleaningSystem : MonoBehaviour
 
         foreach (Collider collider in detectedColliders)
             if (collider.TryGetComponent(out Cleanable cleanable))
-                cleanable.Clean(cleaningSpeed * Time.deltaTime);
+            {
+                if (!cleanable.IsClean())
+                    cleanable.Clean(cleaningSpeed * Time.deltaTime);
+            }
+
     }
 
     private void OnDrawGizmos()
