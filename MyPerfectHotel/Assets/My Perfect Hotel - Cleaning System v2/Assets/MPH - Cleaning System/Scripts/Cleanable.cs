@@ -7,6 +7,8 @@ public class Cleanable : MonoBehaviour
 {
     [Header("Elements")]
     [SerializeField] private Image gageFill;
+    [SerializeField] private GameObject canvas;
+    [SerializeField] private Animator animator;
 
     [Header("Settings")]
     private bool isClean;
@@ -14,6 +16,17 @@ public class Cleanable : MonoBehaviour
     private void Start()
     {
         MessUp();
+    }
+
+    private void Update()
+    {
+        CanvasFaceCamera();
+    }
+
+    private void CanvasFaceCamera()
+    {
+        Vector3 direction = (Camera.main.transform.position - canvas.transform.position).normalized;
+        canvas.transform.forward = direction;
     }
 
     public void Clean(float value)
@@ -29,16 +42,33 @@ public class Cleanable : MonoBehaviour
         gageFill.fillAmount = 0;
 
         isClean = false;
+
+        canvas.SetActive(true);
+
+        MessingAnimation();
     }
 
     private void SetAsClean()
     {
         isClean = true;
-        Debug.Log("Hey, I'm clean");
+
+        canvas.SetActive(false);
+
+        CleaningAnimation();
     }
 
     public bool IsClean()
     {
         return isClean;
+    }
+
+    private void CleaningAnimation()
+    {
+        animator.Play("Clean");
+    }
+
+    private void MessingAnimation()
+    {
+        animator.Play("MessUp");
     }
 }
